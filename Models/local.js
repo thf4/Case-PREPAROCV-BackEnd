@@ -33,4 +33,4 @@ const LocalSchema = new mongoose.Schema({
 
 const Local = mongoose.model("Local", LocalSchema);
 
-module.exports = User;
+module.exports = Local;

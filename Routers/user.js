@@ -2,17 +2,27 @@ const express = require("express");
 const router = express.Router();
 const User = require("../Models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const secret = require("../Middlewares/secret.json");
 
+
+/* Verify User */
 router.post("/login", (req, res) => {
-  res.status(200).json({
-    message: "login",
-  });
+  jwt.sign(
+    {
+      _id: token,
+      email: email,
+    },
+    secret.secret,
+    {}
+  );
 });
 
+/* Create User */
 router.post("/cadastrar", async (req, res) => {
   const { body = {} } = req;
   const { email, password } = body;
-  
+
   try {
     const response = await User.create({
       email,
