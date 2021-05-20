@@ -33,6 +33,30 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
+  city: {
+    type: String,
+    require: true,
+  },
+  statee: {
+    type: String,
+    require: true,
+  },
+  zip: {
+    type: String,
+    require: true,
+  },
+  address: {
+    type: String,
+    require: true,
+  },
+  complement: {
+    type: String,
+    require: true,
+  },
+  district: {
+    type: String,
+    require: false,
+  },
   Date: {
     type: Date,
     default: Date.now(),

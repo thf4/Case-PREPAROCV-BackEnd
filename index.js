@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const data = require("./Routers/local");
 
-require("./Middlewares/cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+require("./Middlewares/cors")(app);
 require("./Routers/user")(app);
 app.use("/user", data);
 

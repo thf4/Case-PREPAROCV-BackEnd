@@ -5,17 +5,22 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const secret = require("../Middlewares/secret.json");
 
-
 /* Verify User */
-router.post("/login", (req, res) => {
-  jwt.sign(
-    {
-      _id: token,
-      email: email,
-    },
-    secret.secret,
-    {}
-  );
+router.post("/login", async (req, res) => {
+  const { body = {} } = req;
+  const { email, password, id } = body;
+  const user = await User.findOne({ email: email }).lean();
+  if (user) {
+    await bcrypt.compare(user.password, password);
+    if (user.password) {
+      const token = jwt.sign({ _id: id, email: email }, secret.secret, {});
+      return res.status(200).json({ token });
+    } else {
+      res.status(401).json({ message: "Password Wrong" });
+    }
+  } else {
+    res.status(401).json({ message: "User don't find!" });
+  }
 });
 
 /* Create User */
@@ -29,7 +34,7 @@ router.post("/cadastrar", async (req, res) => {
       password,
     });
     const hash = bcrypt.hashSync(password, 10);
-    hash.password;
+    response.password = hash;
     response.save();
     return res.status(200).json({ message: "Create Success" });
   } catch (err) {
