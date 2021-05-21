@@ -8,4 +8,7 @@ require("./Middlewares/cors")(app);
 require("./Routers/user")(app);
 app.use("/user", data);
 
-app.listen(3000);
+app.listen(3000, function () {
+  console.log('Listening Port: ', this.address().port);
+  console.log('Server on. ');
+});
