@@ -4,12 +4,25 @@ const User = require("../Models/user");
 const bcrypt = require("bcrypt");
 const auth = require("../Middlewares/auth");
 
+/* load data */
+router.get("/:_id", auth, async (req, res) => {
+  const { _id } = req.params;
+  try {
+    const response = await User.findOne({ _id }).lean();
+    if (response) return res.status(200).json(response);
+  } catch (err) {
+    return res.status(401).json({ message: "Erro ao editar!" });
+  }
+});
+
 /* Update data */
 router.put("/:_id", auth, async (req, res) => {
   const { body = {}, params } = req;
   const { _id } = params;
-  const { email, name, surname, telephone, github, behance, linkedin } = body;
+  const { email, name, surname, telephone, github, behance, linkedin, image } =
+    body;
   try {
+    const imageData = image && image.split(",");
     const response = await User.updateOne(
       { _id },
       {
@@ -20,6 +33,8 @@ router.put("/:_id", auth, async (req, res) => {
         github,
         behance,
         linkedin,
+        image,
+        imageData: (imageData && imageData[0]) || "",
       }
     ).lean();
     if (response.ok)
@@ -40,6 +55,19 @@ router.delete("/:_id", auth, async (req, res) => {
   } catch (err) {
     return res.status(400).json({
       message: "Erro too delete!",
+    });
+  }
+});
+
+/* load local */
+router.get("/local/:_id", auth, async (req, res) => {
+  const { _id } = req.params;
+  try {
+    const response = await User.findOne({ _id }).lean();
+    if (response) return res.status(200).json(response);
+  } catch (err) {
+    return res.status(400).json({
+      message: "Erro ao atualizar!",
     });
   }
 });

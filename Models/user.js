@@ -21,6 +21,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  image: {
+    type: Buffer,
+  },
+  imageData: {
+    type: String,
+  },
   linkedin: {
     type: String,
     require: false,
